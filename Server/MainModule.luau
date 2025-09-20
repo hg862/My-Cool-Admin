@@ -1,6 +1,10 @@
-local MainModule = {}
-local AdminCore = require(script.Parent:WaitForChild("AdminCore"))
+-- MainModule.luau
+local Sanity = require(script:WaitForChild("SanityCheck"))
 
+-- Safe require AdminCore
+local AdminCore = Sanity:RequireModule(script:WaitForChild("AdminCore"))
+
+local MainModule = {}
 MainModule.Core = AdminCore
 MainModule.Commands = AdminCore.Commands
 
@@ -16,12 +20,7 @@ function MainModule:ReloadCommands()
 end
 
 function MainModule:RunCommand(player, commandName, args)
-	local success, err = pcall(function()
-		self.Core:RunCommand(player, commandName, args)
-	end)
-	if not success then
-		warn("Error in MainModule:RunCommand: " .. err)
-	end
+	self.Core:RunCommand(player, commandName, args)
 end
 
 MainModule:Init()
